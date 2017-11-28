@@ -14,3 +14,11 @@ Responsibilities
 - Choose which icon to show on the 16x16 LED display (via the Arduino).
 
 - Control the expression of the eyes.
+
+Setup
+-----
+
+Configure and set your AWS profile
+```
+export AWS_PROFILE=morsel.tech
+```

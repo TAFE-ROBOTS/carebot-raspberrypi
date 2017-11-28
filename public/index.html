@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #000000;
+      }
+      svg {
+        background-color: #000000;
+      }
+    </style>
+    <script>
+
+      const socket = new WebSocket('ws://localhost:3000/echo');
+
+      socket.addEventListener('open', function (event) {
+        socket.send('Hello Server!');
+      });
+
+      socket.addEventListener('message', function (event) {
+        socket.send(eval(event.data));
+      });
+
+    </script>
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" width="800" height="480">
+      <circle cx="600" cy="240" r="100" stroke="#00ddcc" stroke-width="20" />
+      <circle cx="200" cy="240" r="100" stroke="#00ddcc" stroke-width="20" />
+    </svg>
+    <!--<p>I can see ${view}.</p>
+    <audio controls src="data:audio/ogg;base64,${audioStream}" autoplay />-->
+  </body>
+</html>

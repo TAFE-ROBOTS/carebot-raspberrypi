@@ -8,7 +8,7 @@ const AWS = require('aws-sdk')
 const app = express()
 const expressWs = require('express-ws')(app)
 
-AWS.config.loadFromPath('./config.json')
+AWS.config.region = "us-east-1"
 
 let view = "nothing"
 let thinking = false
@@ -53,7 +53,7 @@ function look() {
       })
     }
   }
-  setTimeout(look, 500)
+  //setTimeout(look, 500)
 }
 
 function say(text) {
@@ -127,9 +127,6 @@ function cortex(filename) {
 
 look()
 
-//app.use('/static', express.static('static'))
-
-
 app.ws('/echo', (ws, req) => {
   ws.on('message', msg => {
     console.log(msg)
@@ -140,30 +137,7 @@ function remote(expression, callback) {
   ws.send(expression)
 }
 
-app.get('/', (req, res) => {
-  res.send(`
-    <html>
-      <head>
-        <script>
-
-          const socket = new WebSocket('ws://localhost:3000/echo');
-
-          socket.addEventListener('open', function (event) {
-            socket.send('Hello Server!');
-          });
-
-          socket.addEventListener('message', function (event) {
-            socket.send(eval(event.data));
-          });
-
-        </script>
-      </head>
-    <h1>Hello</h1>
-    <!--<p>I can see ${view}.</p>
-    <audio controls src="data:audio/ogg;base64,${audioStream}" autoplay />-->
-    </html>
-  `)
-})
+app.use(express.static('public'))
 
 app.listen(3000, () => {
   console.log('fn1 is listening on port 3000!')
