@@ -15,7 +15,7 @@ let thinking = false
 let audioStream = null
 let focus //Current face in view
 
-let port = new SerialPort('/dev/serial1', {
+let port = new SerialPort('/dev/ttyACM0', {
   baudRate: 9600
 })
 
