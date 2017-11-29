@@ -28,10 +28,9 @@ polly.synthesizeSpeech(params, function(err, data) {
       let bufferStream = new stream.PassThrough()
       bufferStream.end(data.AudioStream)
       bufferStream.pipe(player)
+      setTimeout(() => {
+        console.log('wait')
+      }, 5000)
     }
   }
 })
-
-setTimeout(() => {
-  console.log('wait')
-}, 2000)
