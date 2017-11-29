@@ -2,7 +2,8 @@ const AWS = require('aws-sdk')
 const speaker = require('speaker')
 const stream = require('stream')
 
-AWS.config.loadFromPath('./config.json')
+AWS.config.region = "us-east-1"
+
 var polly = new AWS.Polly()
 
 const player = new speaker({
