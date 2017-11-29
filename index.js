@@ -155,7 +155,7 @@ function cortex(filename) {
 }
 
 look()
-setIcon('y')
+setIcon('?')
 say("Hello")
 
 app.ws('/echo', (ws, req) => {
