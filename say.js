@@ -22,7 +22,7 @@ let params = {
 
 polly.synthesizeSpeech(params, function(err, data) {
   if (err) {
-    console.log(err, err.stack)
+    console.log(`ERROR: ${err}`, err.stack)
   } else {
     if (data.AudioStream instanceof Buffer) {
       let bufferStream = new stream.PassThrough()
