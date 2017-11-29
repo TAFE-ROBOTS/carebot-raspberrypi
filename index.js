@@ -68,6 +68,7 @@ function listen() {
 }
 
 function setIcon(symbol) {
+  console.log(`setting icon to: ${symbol}`)
   port.write(symbol, (err) => {
     console.log(`Error when comms with arduino: ${err}`)
   })
