@@ -9,12 +9,12 @@ var polly = new AWS.Polly()
 const player = new speaker({
   channels: 1,
   bitDepth: 16,
-  sampleRate: 16000
+  sampleRate: 8000
 })
 
 let params = {
   OutputFormat: "pcm",
-  SampleRate: "16000",
+  SampleRate: "8000",
   Text: process.argv[2],
   TextType: "text",
   VoiceId: "Nicole"
