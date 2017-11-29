@@ -15,19 +15,23 @@
       const socket = new WebSocket('ws://localhost:3000/echo');
 
       socket.addEventListener('open', function (event) {
-        socket.send('Hello Server!');
+        socket.send('browserConnected()');
       });
 
       socket.addEventListener('message', function (event) {
         socket.send(eval(event.data));
       });
 
+      
+
     </script>
   </head>
   <body>
     <svg xmlns="http://www.w3.org/2000/svg" width="800" height="480">
-      <circle cx="600" cy="240" r="100" stroke="#00ddcc" stroke-width="20" />
-      <circle cx="200" cy="240" r="100" stroke="#00ddcc" stroke-width="20" />
+      <circle id="leftEye" cx="200" cy="240" r="100" stroke="#00ffcc" stroke-width="20" />
+      <circle id="leftPupil" cx="200" cy="240" r="20" fill="#ffffff" />
+      <circle id="rightEye" cx="600" cy="240" r="100" stroke="#00ffcc" stroke-width="20" />
+      <circle id="rightPupil" cx="600" cy="240" r="20" fill="#ffffff" />
     </svg>
     <!--<p>I can see ${view}.</p>
     <audio controls src="data:audio/ogg;base64,${audioStream}" autoplay />-->

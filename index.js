@@ -1,9 +1,8 @@
 const fs = require('fs')
 const express = require('express')
-const pimode = false
+const pimode = true
 const sn = 19389921
-const webcam = require('node-webcam')
-//const raspicam = require('raspicam')
+const cam = pimode ? require('raspicam') : require('node-webcam')
 const AWS = require('aws-sdk')
 const app = express()
 const expressWs = require('express-ws')(app)
@@ -13,11 +12,12 @@ AWS.config.region = "us-east-1"
 let view = "nothing"
 let thinking = false
 let audioStream = null
+let focus //Current face in view
 
 let rekognition = new AWS.Rekognition()
 var polly = new AWS.Polly()
 
-let camera = pimode ? new raspicam({mode: "photo", output: "/tmp/eyes.jpg", nopreview: true, timeout: 10, rotation: 270}) : webcam.create({width: 640, height: 480, quality: 80, output: "jpeg", device: false, callbackReturn: "location"})
+let camera = pimode ? new cam({mode: "photo", output: "/tmp/eyes.jpg", nopreview: true, timeout: 10, rotation: 270}) : cam.create({width: 640, height: 480, quality: 80, output: "jpeg", device: false, callbackReturn: "location"})
 if (pimode) {
   camera.on("read", (err, timestamp, filename) => {
     if (err) {
@@ -47,13 +47,17 @@ function look() {
         if (err) {
           console.log(err)
           thinking = false
+          setTimeout(look, 1000)
         } else {
           cortex(data)
         }
       })
     }
   }
-  //setTimeout(look, 500)
+}
+
+function listen() {
+
 }
 
 function say(text) {
@@ -77,12 +81,15 @@ function checkFace(data) {
     if (err) {
       console.log(err, err.stack)
       thinking = false
+      setTimeout(look, 1000)
     } else {
       if (faces.FaceMatches.length > 0) {
-        let face = faces.FaceMatches[0]
+        focus = faces.FaceMatches[0]
         console.log(`Hello ${face}`)
+        setTimeout(look, 1000)
       } else {
         say("Hello, I don't think we have met. What's your name?")
+        listen()
       }
       thinking = false
     }
@@ -95,11 +102,13 @@ function cortex(filename) {
     if (err) {
       console.log('failed to read image')
       thinking = false
+      setTimeout(look, 1000)
     } else {
       rekognition.detectLabels({Image: {Bytes: data}, MaxLabels: 5, MinConfidence: 60.0}, (err, description) => {
         if (err) {
           console.log(err, err.stack)
           thinking = false
+          setTimeout(look, 1000)
         } else {
           if (description.Labels.length > 0) {
             found = false
@@ -114,10 +123,12 @@ function cortex(filename) {
               //Other items
               console.log(description)
               thinking = false
+              setTimeout(look, 1000)
             }
           } else {
             view = "nothing"
             thinking = false
+            setTimeout(look, 1000)
           }
         }
       })
