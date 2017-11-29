@@ -31,3 +31,7 @@ polly.synthesizeSpeech(params, function(err, data) {
     }
   }
 })
+
+setTimeout(() => {
+  console.log('wait')
+}, 2000)
