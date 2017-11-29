@@ -35,6 +35,10 @@ if (pimode) {
   })
 }
 
+port.on('data', function (data) {
+  console.log('Data:', data)
+})
+
 rekognition.createCollection({CollectionId: `fn1-friends-${sn}`}, (err, data) => {
   if (err) {
     console.log("Using existing image collection")
@@ -44,22 +48,22 @@ rekognition.createCollection({CollectionId: `fn1-friends-${sn}`}, (err, data) =>
 })
 
 function look() {
-  if (thinking === false) {
-    thinking = true
-    if (pimode) {
-      camera.start()
-    } else {
-      camera.capture("/tmp/eyes.jpg", (err, data) => {
-        if (err) {
-          console.log(err)
-          thinking = false
-          setTimeout(look, 1000)
-        } else {
-          cortex(data)
-        }
-      })
-    }
-  }
+  // if (thinking === false) {
+  //   thinking = true
+  //   if (pimode) {
+  //     camera.start()
+  //   } else {
+  //     camera.capture("/tmp/eyes.jpg", (err, data) => {
+  //       if (err) {
+  //         console.log(err)
+  //         thinking = false
+  //         setTimeout(look, 1000)
+  //       } else {
+  //         cortex(data)
+  //       }
+  //     })
+  //   }
+  // }
 }
 
 function listen() {
