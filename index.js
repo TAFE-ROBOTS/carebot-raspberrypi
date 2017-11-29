@@ -3,6 +3,7 @@ const express = require('express')
 const pimode = true
 const sn = 19389921
 const cam = pimode ? require('raspicam') : require('node-webcam')
+const serialport = require('serialport')
 const AWS = require('aws-sdk')
 const app = express()
 const expressWs = require('express-ws')(app)
@@ -13,6 +14,11 @@ let view = "nothing"
 let thinking = false
 let audioStream = null
 let focus //Current face in view
+
+let port = new SerialPort('/dev/serial1', {
+  baudRate: 9600
+})
+
 
 let rekognition = new AWS.Rekognition()
 var polly = new AWS.Polly()
@@ -58,9 +64,17 @@ function look() {
 
 function listen() {
 
+
+}
+
+function setIcon(symbol) {
+  port.write(symbol, (err) => {
+    console.log(`Error when comms with arduino: ${err}`)
+  })
 }
 
 function say(text) {
+  setIcon('!')
   console.log(`Saying ${text}`)
   polly.synthesizeSpeech({
     OutputFormat: "mp3",
@@ -138,6 +152,7 @@ function cortex(filename) {
 }
 
 look()
+setIcon('y')
 say("Hello")
 
 app.ws('/echo', (ws, req) => {
