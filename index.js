@@ -61,6 +61,7 @@ function listen() {
 }
 
 function say(text) {
+  console.log(`Saying ${text}`)
   polly.synthesizeSpeech({
     OutputFormat: "mp3",
     SampleRate: "8000",
@@ -137,6 +138,7 @@ function cortex(filename) {
 }
 
 look()
+say("Hello")
 
 app.ws('/echo', (ws, req) => {
   ws.on('message', msg => {
